@@ -1,0 +1,5 @@
+Какие тип и класс запроса видны в DNS-запросе?
+
+my.site: type A, class IN
+    "Type: A (1) (Host Address)"
+    "Class: IN (0x0001)"
