@@ -27,7 +27,6 @@ smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 smtpd_tls_security_level = encrypt
 smtpd_use_tls = yes
 smtp_tls_CApath = /etc/ssl/certs
-smtp_tls_CAfile = /etc/postfix/cert.pem
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 smtp_tls_wrappermode=yes
 smtp_tls_security_level = encrypt
@@ -35,25 +34,30 @@ smtp_use_tls = yes
 smtp_tls_protocols = !SSLv2, !SSLv3
 
 # mail.ru
- 
+
 relayhost = smtp.mail.ru:465
+smtp_tls_CAfile = /etc/postfix/cert.pem
+
+# sasl auth relayhost
+
 smtp_sasl_auth_enable=yes
+smtp_sasl_mechanism_filter=login
 smtp_sasl_password_maps = hash:/etc/postfix/mailpass
 smtp_sasl_security_options = noanonymous
 smtp_sasl_type = cyrus
-smtp_generic_maps = hash:/etc/postfix/generic
-#masquerade_domains = mail.ru
-sender_dependent_relayhost_maps = hash:/etc/postfix/sender_relay
-smtp_sasl_mechanism_filter=login
-smtp_sender_dependent_authentication = yes
-# sender_canonical_maps = hash:/etc/postfix/canonical
-# smtp_generic_maps = hash:/etc/postfix/generic
 
+#Generic mail address
+
+smtp_generic_maps = hash:/etc/postfix/generic
+
+#sender_dependent_relayhost_maps = hash:/etc/postfix/sender_relay
+#smtp_sender_dependent_authentication = yes
+# sender_canonical_maps = hash:/etc/postfix/canonical
 
 # MySettings
 smtpd_relay_restrictions=permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-#myhostname=test_mvs
-#mydomain=mymail.com
+#myhostname=
+#mydomain=
 alias_maps=hash:/etc/aliases
 alias_database=hash:/etc/aliases
 myorigin = test_mvs.mail.ru
