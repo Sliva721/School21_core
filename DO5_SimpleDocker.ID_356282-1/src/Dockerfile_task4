@@ -1,0 +1,10 @@
+FROM ubuntu/nginx:1.18-20.04_edge
+RUN mkdir /home/app
+WORKDIR /home/app
+COPY ./server/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./server/hello_fcgi.c /home/app/hello_fcgi.c
+COPY ./server/start.sh /home/app/start.sh
+RUN apt-get update; \
+    apt-get install -y gcc spawn-fcgi libfcgi-dev; \
+    chmod +x /home/app/start.sh; 
+ENTRYPOINT ["./start.sh"]
